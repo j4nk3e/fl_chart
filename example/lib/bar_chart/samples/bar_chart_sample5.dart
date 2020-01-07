@@ -32,6 +32,7 @@ class BarChartSample5State extends State<BarChartSample5> {
             BarChartData(
               alignment: BarChartAlignment.center,
               maxY: 20,
+              groupsSpace: 12,
               barTouchData: const BarTouchData(
                 enabled: false,
               ),
@@ -109,13 +110,13 @@ class BarChartSample5State extends State<BarChartSample5> {
                 show: false,
               ),
               barGroups: [
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 0,
                   barRods: [
                     BarChartRodData(
                       y: 15.1,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(10),
                       rodStackItem: [
                         BarChartRodStackItem(0, 2, Color(0xff2bdb90)),
                         BarChartRodStackItem(2, 5, Color(0xffffdd80)),
@@ -125,29 +126,29 @@ class BarChartSample5State extends State<BarChartSample5> {
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 1,
                   barRods: [
                     BarChartRodData(
                       y: 14,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                       rodStackItem: [
+                        BarChartRodStackItem(0, 14, Color(0xff19bfff)),
+                        BarChartRodStackItem(0, 7.5, Color(0xffff4d94)),
+                        BarChartRodStackItem(0, 4.5, Color(0xffffdd80)),
                         BarChartRodStackItem(0, 1.8, Color(0xff2bdb90)),
-                        BarChartRodStackItem(1.8, 4.5, Color(0xffffdd80)),
-                        BarChartRodStackItem(4.5, 7.5, Color(0xffff4d94)),
-                        BarChartRodStackItem(7.5, 14, Color(0xff19bfff)),
                       ],
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 2,
                   barRods: [
                     BarChartRodData(
                       y: 13,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(0),
                       rodStackItem: [
                         BarChartRodStackItem(0, 1.5, Color(0xff2bdb90)),
                         BarChartRodStackItem(1.5, 3.5, Color(0xffffdd80)),
@@ -157,13 +158,13 @@ class BarChartSample5State extends State<BarChartSample5> {
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 3,
                   barRods: [
                     BarChartRodData(
                       y: 13.5,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(0),
                       rodStackItem: [
                         BarChartRodStackItem(0, 1.5, Color(0xff2bdb90)),
                         BarChartRodStackItem(1.5, 3, Color(0xffffdd80)),
@@ -173,13 +174,13 @@ class BarChartSample5State extends State<BarChartSample5> {
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 4,
                   barRods: [
                     BarChartRodData(
                       y: 18,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(0),
                       rodStackItem: [
                         BarChartRodStackItem(0, 2, Color(0xff2bdb90)),
                         BarChartRodStackItem(2, 4, Color(0xffffdd80)),
@@ -189,13 +190,13 @@ class BarChartSample5State extends State<BarChartSample5> {
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 5,
                   barRods: [
                     BarChartRodData(
                       y: 17,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(0),
                       rodStackItem: [
                         BarChartRodStackItem(0, 1.2, Color(0xff2bdb90)),
                         BarChartRodStackItem(1.2, 2.7, Color(0xffffdd80)),
@@ -205,13 +206,13 @@ class BarChartSample5State extends State<BarChartSample5> {
                     ),
                   ],
                 ),
-                const BarChartGroupData(
+                BarChartGroupData(
                   x: 6,
                   barRods: [
                     BarChartRodData(
                       y: 16,
                       width: barWidth,
-                      isRound: false,
+                      borderRadius: BorderRadius.circular(0),
                       rodStackItem: [
                         BarChartRodStackItem(0, 1.2, Color(0xff2bdb90)),
                         BarChartRodStackItem(1.2, 6, Color(0xffffdd80)),
