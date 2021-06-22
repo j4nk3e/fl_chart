@@ -214,7 +214,7 @@ abstract class AxisChartPainter<D extends AxisChartData> extends BaseChartPainte
     if (data.gridData.drawVerticalLine) {
       final verticalInterval = data.gridData.verticalInterval ??
           getEfficientInterval(viewSize.width, data.horizontalDiff);
-      var verticalSeek = data.minX + verticalInterval;
+      var verticalSeek = data.minX;
 
       final delta = data.maxX - data.minX;
       final count = delta ~/ verticalInterval;
@@ -245,7 +245,7 @@ abstract class AxisChartPainter<D extends AxisChartData> extends BaseChartPainte
     if (data.gridData.drawHorizontalLine) {
       final horizontalInterval = data.gridData.horizontalInterval ??
           getEfficientInterval(viewSize.height, data.verticalDiff);
-      var horizontalSeek = data.minY + horizontalInterval;
+      var horizontalSeek = data.minY;
 
       final delta = data.maxY - data.minY;
       final count = delta ~/ horizontalInterval;
