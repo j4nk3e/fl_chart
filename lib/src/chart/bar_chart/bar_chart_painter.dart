@@ -207,7 +207,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         final cornerHeight = max(borderRadius.topLeft.y, borderRadius.topRight.y) +
             max(borderRadius.bottomLeft.y, borderRadius.bottomRight.y);
 
-        RRect barRRect;
+        var barRRect = RRect.zero;
 
         /// Draw [BackgroundBarChartRodData]
         if (barRod.backDrawRodData.show && barRod.backDrawRodData.y != 0) {
@@ -260,28 +260,28 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         }
 
         // draw Main Rod
+        if (barRod.y > 0) {
+          // positive
+          final bottom = getPixelY(max(data.minY, 0), drawSize, holder);
+          final top = min(getPixelY(barRod.y, drawSize, holder), bottom - cornerHeight);
+
+          barRRect = RRect.fromLTRBAndCorners(left, top, right, bottom,
+              topLeft: borderRadius.topLeft,
+              topRight: borderRadius.topRight,
+              bottomLeft: borderRadius.bottomLeft,
+              bottomRight: borderRadius.bottomRight);
+        } else {
+          // negative
+          final top = getPixelY(min(data.maxY, 0), drawSize, holder);
+          final bottom = max(getPixelY(barRod.y, drawSize, holder), top + cornerHeight);
+
+          barRRect = RRect.fromLTRBAndCorners(left, top, right, bottom,
+              topLeft: borderRadius.topLeft,
+              topRight: borderRadius.topRight,
+              bottomLeft: borderRadius.bottomLeft,
+              bottomRight: borderRadius.bottomRight);
+        }
         if (barRod.y != 0) {
-          if (barRod.y > 0) {
-            // positive
-            final bottom = getPixelY(max(data.minY, 0), drawSize, holder);
-            final top = min(getPixelY(barRod.y, drawSize, holder), bottom - cornerHeight);
-
-            barRRect = RRect.fromLTRBAndCorners(left, top, right, bottom,
-                topLeft: borderRadius.topLeft,
-                topRight: borderRadius.topRight,
-                bottomLeft: borderRadius.bottomLeft,
-                bottomRight: borderRadius.bottomRight);
-          } else {
-            // negative
-            final top = getPixelY(min(data.maxY, 0), drawSize, holder);
-            final bottom = max(getPixelY(barRod.y, drawSize, holder), top + cornerHeight);
-
-            barRRect = RRect.fromLTRBAndCorners(left, top, right, bottom,
-                topLeft: borderRadius.topLeft,
-                topRight: borderRadius.topRight,
-                bottomLeft: borderRadius.bottomLeft,
-                bottomRight: borderRadius.bottomRight);
-          }
           if (barRod.colors.length == 1) {
             _barPaint.color = barRod.colors[0];
             _barPaint.shader = null;
@@ -317,6 +317,41 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
               canvasWrapper.drawRRect(barRRect, _barPaint);
               canvasWrapper.restore();
             }
+          }
+        }
+        
+        final text = barRod.text;
+        if (text != null) {
+          var tp = TextPainter(
+              text: TextSpan(text: text, style: barRod.textStyle),
+              maxLines: 1,
+              ellipsis: '…',
+              textScaleFactor: holder.textScale,
+              textDirection: TextDirection.ltr);
+          final maxWidth = barRRect.height - barRod.textPadding * 2;
+          final remainingWidth = drawSize.height - barRRect.height - barRod.textPadding * 2;
+          if (maxWidth > 0 || remainingWidth > 0) {
+            canvasWrapper.save();
+            canvasWrapper.translate(barRRect.left, barRRect.bottom);
+            canvasWrapper.rotate(pi * 1.5);
+            var offset = barRod.textPadding;
+            if (maxWidth > 0) {
+              tp.layout(maxWidth: maxWidth);
+            }
+            if (maxWidth <= 0 ||
+                tp.minIntrinsicWidth > maxWidth && barRRect.height < remainingWidth) {
+              tp = TextPainter(
+                  text: TextSpan(
+                      text: text, style: barRod.textStyle.copyWith(color: _barPaint.color)),
+                  maxLines: 1,
+                  ellipsis: '…',
+                  textScaleFactor: holder.textScale,
+                  textDirection: TextDirection.ltr);
+              tp.layout(maxWidth: remainingWidth);
+              offset += barRRect.height;
+            }
+            canvasWrapper.drawText(tp, Offset(offset, (barRRect.width - tp.height) / 2));
+            canvasWrapper.restore();
           }
         }
       }
@@ -438,7 +473,6 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
 
         final xValue = data.barGroups[index].x.toDouble();
         final text = bottomTitles.getTitles(xValue);
-        // ignore: omit_local_variable_types
         final span = TextSpan(style: bottomTitles.getTextStyles(xValue), text: text);
         final tp = TextPainter(
             text: span,
@@ -528,8 +562,7 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
         : barBottomY + tooltipData.tooltipMargin;
 
     /// draw the background rect with rounded radius
-    // ignore: omit_local_variable_types
-    Rect rect =
+    var rect =
         Rect.fromLTWH(barOffset.dx - (tooltipWidth / 2), tooltipTop, tooltipWidth, tooltipHeight);
 
     if (tooltipData.fitInsideHorizontally) {

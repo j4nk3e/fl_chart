@@ -289,6 +289,12 @@ class BarChartRodData with EquatableMixin {
   /// you can fill up the [rodStackItems] to have a Stacked Chart.
   final List<BarChartRodStackItem> rodStackItems;
 
+  final String? text;
+
+  final TextStyle textStyle;
+
+  final double textPadding;
+
   /// [BarChart] renders rods vertically from zero to [y],
   /// and the x is equivalent to the [BarChartGroupData.x] value.
   ///
@@ -322,6 +328,9 @@ class BarChartRodData with EquatableMixin {
     BorderRadius? borderRadius,
     BackgroundBarChartRodData? backDrawRodData,
     List<BarChartRodStackItem>? rodStackItems,
+    String? text,
+    TextStyle? textStyle,
+    double? textPadding,
   })  : y = y,
         colors = colors ?? [Colors.blueAccent],
         gradientFrom = gradientFrom ?? const Offset(0.5, 1),
@@ -330,7 +339,10 @@ class BarChartRodData with EquatableMixin {
         width = width ?? 8,
         borderRadius = normalizeBorderRadius(borderRadius, width ?? 8),
         backDrawRodData = backDrawRodData ?? BackgroundBarChartRodData(),
-        rodStackItems = rodStackItems ?? const [];
+        rodStackItems = rodStackItems ?? const [],
+        text = text,
+        textStyle = textStyle ?? TextStyle(),
+        textPadding = textPadding ?? 0.0;
 
   /// Copies current [BarChartRodData] to a new [BarChartRodData],
   /// and replaces provided values.
@@ -370,6 +382,9 @@ class BarChartRodData with EquatableMixin {
       y: lerpDouble(a.y, b.y, t)!,
       backDrawRodData: BackgroundBarChartRodData.lerp(a.backDrawRodData, b.backDrawRodData, t),
       rodStackItems: lerpBarChartRodStackList(a.rodStackItems, b.rodStackItems, t),
+      text: b.text,
+      textStyle: TextStyle.lerp(a.textStyle, b.textStyle, t),
+      textPadding: lerpDouble(a.textPadding, b.textPadding, t),
     );
   }
 
@@ -385,6 +400,9 @@ class BarChartRodData with EquatableMixin {
         gradientFrom,
         gradientTo,
         colorStops,
+        text,
+        textStyle,
+        textPadding,
       ];
 }
 
